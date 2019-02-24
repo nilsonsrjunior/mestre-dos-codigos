@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  exercicio.tres:
+    image: ${DOCKER_REGISTRY-}exerciciotres
+    build:
+      context: .
+      dockerfile: Exercicio.Tres/Exercicio.Tres/Dockerfile
