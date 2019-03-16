@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Exercicio.Tres
 {
-    class Program
+    public class Program
     {
         private const string _hero = "Hulk";
 
@@ -17,7 +17,7 @@ namespace Exercicio.Tres
         {
             var builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            .AddJsonFile("appSettings.json", optional: true, reloadOnChange: true);
 
             var configuration = builder.Build();
 
@@ -26,12 +26,12 @@ namespace Exercicio.Tres
 
             FindOutAboutMarvelHero(configuration, _hero);
 
-            Console.ReadLine();
+            Console.Read();
         }
 
-        private static void FindOutAboutMarvelHero(IConfigurationRoot configuration, string hero)
+        public static Personagem FindOutAboutMarvelHero(IConfiguration configuration, string hero)
         {
-            Personagem personagem;
+            Personagem personagem = null;
 
             using (var client = new HttpClient())
             {
@@ -57,17 +57,25 @@ namespace Exercicio.Tres
 
                 dynamic resultado = JsonConvert.DeserializeObject(conteudo);
 
-                personagem = new Personagem
+                try
                 {
-                    Nome = resultado.data.results[0].name,
-                    Descricao = resultado.data.results[0].description,
-                    UrlImagem = resultado.data.results[0].thumbnail.path + "." +
-                    resultado.data.results[0].thumbnail.extension,
-                    UrlWiki = resultado.data.results[0].urls[1].url
-                };
+                    personagem = new Personagem
+                    {
+                        Nome = resultado.data.results[0].name,
+                        Descricao = resultado.data.results[0].description,
+                        UrlImagem = resultado.data.results[0].thumbnail.path + "." + resultado.data.results[0].thumbnail.extension,
+                        UrlWiki = resultado.data.results[0].urls[1].url
+                    };
 
-                Console.WriteLine($"Hero Info: {JsonConvert.SerializeObject(personagem)}");
+                    Console.WriteLine($"Hero Info: {JsonConvert.SerializeObject(personagem)}");
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Hero does not exist");
+                }   
             }
+
+            return personagem;
         }
 
         private static string GerarHash(

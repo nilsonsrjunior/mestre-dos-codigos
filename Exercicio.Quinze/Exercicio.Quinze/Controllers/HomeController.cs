@@ -1,20 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Exercicio.Quinze.Models;
 using Microsoft.AspNetCore.Mvc;
-using Exercicio.Quinze.Models;
-using Exercicio.Tres;
-using Flurl.Http;
+using Microsoft.Extensions.Configuration;
+using System.Diagnostics;
 
 namespace Exercicio.Quinze.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IConfiguration _configuration;
+
+        public HomeController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public IActionResult Index()
         {
             return View();
+        }
+
+
+        public IActionResult FindHero(string hero)
+        {
+            var personagem = Exercicio.Tres.Program.FindOutAboutMarvelHero(_configuration, hero);
+            ViewBag.Personagem = personagem;
+            return View("Index");
         }
 
         public IActionResult Privacy()

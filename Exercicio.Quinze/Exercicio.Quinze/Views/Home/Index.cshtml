@@ -3,10 +3,44 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    @foreach (var item in ViewBag.CatFacts)
-    {
-        <span>@item.Text</span>
-    }
+    <form asp-controller="Home" asp-action="FindHero">
+        <h3 class="display-4">Bem Vindo !</h3>
+        <p> Digite o nome de um herói da marvel para saber mais sobre ele !</p>
+        <input type="text" class="form-control" name="hero" />
+        <br />
+        <button type="submit">Buscar</button>
+        <br />
+        @if (ViewBag.Personagem != null)
+        {
+            var personagemMarvel = (Exercicio.Tres.Personagem)ViewBag.Personagem;
+            <br />
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>Descrição</b></td>
+                        <td>@personagemMarvel.Descricao</td>
+                    </tr>
+                    <tr>
+                        <td><b>Nome</b></td>
+                        <td>@personagemMarvel.Nome</td>
+                    </tr>
+                    <tr>
+                        <td><b>Wiki</b></td>
+                        <td><a href="@personagemMarvel.UrlWiki" target="_blank">Conheça a história de @personagemMarvel.Nome</a></td>
+                    </tr>
+                    <tr>
+                        <td><b>Imagem</b></td>
+                        <td><img src="@personagemMarvel.UrlImagem" /></td>
+
+                    </tr>
+                </tbody>
+            </table>
+        }
+    </form>
 </div>
