@@ -1,7 +1,13 @@
 ﻿using Exercicio.Quinze.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using System;
 using System.Diagnostics;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Exercicio.Quinze.Controllers
 {
@@ -19,11 +25,9 @@ namespace Exercicio.Quinze.Controllers
             return View();
         }
 
-
         public IActionResult FindHero(string hero)
         {
-            var personagem = Exercicio.Tres.Program.FindOutAboutMarvelHero(_configuration, hero);
-            ViewBag.Personagem = personagem;
+            ViewBag.Personagem = MarvelHelper.FindOutAboutMarvelHero(_configuration, hero);
             return View("Index");
         }
 
